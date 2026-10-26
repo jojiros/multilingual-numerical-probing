@@ -1,0 +1,100 @@
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [206, 118], "content_words": "deux cent six cent dix-huit", "content_digits": "206 118"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [639, 950], "content_words": "six cent trente-neuf neuf cent cinquante", "content_digits": "639 950"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [840, 960], "content_words": "neuf cent soixante huit cent quarante", "content_digits": "840 960"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 519, "content_words": "cinq cent dix-neuf", "content_digits": "519"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 413, "content_words": "quatre cent treize", "content_digits": "413"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [38, 330], "content_words": "trente-huit trois cent trente", "content_digits": "38 330"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 79, "content_words": "soixante-dix-neuf", "content_digits": "79"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [130, 275], "content_words": "deux cent soixante-quinze cent trente", "content_digits": "130 275"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [423, 930], "content_words": "quatre cent vingt-trois neuf cent trente", "content_digits": "423 930"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [790, 556], "content_words": "cinq cent cinquante-six sept cent quatre-vingt-dix", "content_digits": "790 556"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [99, 142], "content_words": "cent quarante-deux quatre-vingt-dix-neuf", "content_digits": "99 142"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 252, "content_words": "deux cent cinquante-deux", "content_digits": "252"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 877, "content_words": "huit cent soixante-dix-sept", "content_digits": "877"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [643, 939], "content_words": "neuf cent trente-neuf six cent quarante-trois", "content_digits": "643 939"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 796, "content_words": "sept cent quatre-vingt-seize", "content_digits": "796"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [685, 99], "content_words": "six cent quatre-vingt-cinq quatre-vingt-dix-neuf", "content_digits": "685 99"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [826, 34], "content_words": "trente-quatre huit cent vingt-six", "content_digits": "826 34"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 455, "content_words": "quatre cent cinquante-cinq", "content_digits": "455"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 290, "content_words": "deux cent quatre-vingt-dix", "content_digits": "290"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 981, "content_words": "neuf cent quatre-vingt-un", "content_digits": "981"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 600, "content_words": "six cents", "content_digits": "600"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 695, "content_words": "six cent quatre-vingt-quinze", "content_digits": "695"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 531, "content_words": "cinq cent trente et un", "content_digits": "531"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 461, "content_words": "quatre cent soixante et un", "content_digits": "461"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [951, 754], "content_words": "neuf cent cinquante et un sept cent cinquante-quatre", "content_digits": "951 754"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 297, "content_words": "deux cent quatre-vingt-dix-sept", "content_digits": "297"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [389, 699], "content_words": "six cent quatre-vingt-dix-neuf trois cent quatre-vingt-neuf", "content_digits": "389 699"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 393, "content_words": "trois cent quatre-vingt-treize", "content_digits": "393"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [590, 273], "content_words": "deux cent soixante-treize cinq cent quatre-vingt-dix", "content_digits": "590 273"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [165, 989], "content_words": "neuf cent quatre-vingt-neuf cent soixante-cinq", "content_digits": "165 989"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [308, 848], "content_words": "trois cent huit huit cent quarante-huit", "content_digits": "308 848"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [836, 327], "content_words": "huit cent trente-six trois cent vingt-sept", "content_digits": "836 327"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 509, "content_words": "cinq cent neuf", "content_digits": "509"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 51, "content_words": "cinquante et un", "content_digits": "51"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [876, 33], "content_words": "huit cent soixante-seize trente-trois", "content_digits": "876 33"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [898, 995], "content_words": "neuf cent quatre-vingt-quinze huit cent quatre-vingt-dix-huit", "content_digits": "898 995"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 965, "content_words": "neuf cent soixante-cinq", "content_digits": "965"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [591, 979], "content_words": "cinq cent quatre-vingt-onze neuf cent soixante-dix-neuf", "content_digits": "591 979"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [814, 534], "content_words": "huit cent quatorze cinq cent trente-quatre", "content_digits": "814 534"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 390, "content_words": "trois cent quatre-vingt-dix", "content_digits": "390"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [947, 238], "content_words": "deux cent trente-huit neuf cent quarante-sept", "content_digits": "947 238"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [437, 750], "content_words": "quatre cent trente-sept sept cent cinquante", "content_digits": "437 750"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [47, 822], "content_words": "huit cent vingt-deux quarante-sept", "content_digits": "47 822"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [702, 730], "content_words": "sept cent trente sept cent deux", "content_digits": "702 730"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 211, "content_words": "deux cent onze", "content_digits": "211"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [579, 516], "content_words": "cinq cent seize cinq cent soixante-dix-neuf", "content_digits": "579 516"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [581, 992], "content_words": "neuf cent quatre-vingt-douze cinq cent quatre-vingt-un", "content_digits": "581 992"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [945, 407], "content_words": "neuf cent quarante-cinq quatre cent sept", "content_digits": "945 407"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [446, 326], "content_words": "quatre cent quarante-six trois cent vingt-six", "content_digits": "446 326"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [596, 730], "content_words": "sept cent trente cinq cent quatre-vingt-seize", "content_digits": "596 730"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [275, 901], "content_words": "neuf cent un deux cent soixante-quinze", "content_digits": "275 901"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 703, "content_words": "sept cent trois", "content_digits": "703"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [793, 171], "content_words": "cent soixante et onze sept cent quatre-vingt-treize", "content_digits": "793 171"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [332, 779], "content_words": "trois cent trente-deux sept cent soixante-dix-neuf", "content_digits": "332 779"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [270, 534], "content_words": "deux cent soixante-dix cinq cent trente-quatre", "content_digits": "270 534"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 12, "content_words": "douze", "content_digits": "12"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 930, "content_words": "neuf cent trente", "content_digits": "930"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [632, 955], "content_words": "six cent trente-deux neuf cent cinquante-cinq", "content_digits": "632 955"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 958, "content_words": "neuf cent cinquante-huit", "content_digits": "958"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [260, 601], "content_words": "six cent un deux cent soixante", "content_digits": "260 601"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 147, "content_words": "cent quarante-sept", "content_digits": "147"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 441, "content_words": "quatre cent quarante et un", "content_digits": "441"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [473, 29], "content_words": "vingt-neuf quatre cent soixante-treize", "content_digits": "473 29"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [781, 751], "content_words": "sept cent quatre-vingt-un sept cent cinquante et un", "content_digits": "781 751"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [760, 615], "content_words": "six cent quinze sept cent soixante", "content_digits": "760 615"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [275, 707], "content_words": "sept cent sept deux cent soixante-quinze", "content_digits": "275 707"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [111, 740], "content_words": "sept cent quarante cent onze", "content_digits": "111 740"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [622, 393], "content_words": "six cent vingt-deux trois cent quatre-vingt-treize", "content_digits": "622 393"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [947, 776], "content_words": "neuf cent quarante-sept sept cent soixante-seize", "content_digits": "947 776"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [946, 179], "content_words": "cent soixante-dix-neuf neuf cent quarante-six", "content_digits": "946 179"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 438, "content_words": "quatre cent trente-huit", "content_digits": "438"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 24, "content_words": "vingt-quatre", "content_digits": "24"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [462, 966], "content_words": "neuf cent soixante-six quatre cent soixante-deux", "content_digits": "462 966"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [982, 114], "content_words": "neuf cent quatre-vingt-deux cent quatorze", "content_digits": "982 114"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 654, "content_words": "six cent cinquante-quatre", "content_digits": "654"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 549, "content_words": "cinq cent quarante-neuf", "content_digits": "549"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 26, "content_words": "vingt-six", "content_digits": "26"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 721, "content_words": "sept cent vingt et un", "content_digits": "721"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 740, "content_words": "sept cent quarante", "content_digits": "740"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 146, "content_words": "cent quarante-six", "content_digits": "146"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 52, "content_words": "cinquante-deux", "content_digits": "52"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [386, 299], "content_words": "deux cent quatre-vingt-dix-neuf trois cent quatre-vingt-six", "content_digits": "386 299"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 954, "content_words": "neuf cent cinquante-quatre", "content_digits": "954"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [193, 71], "content_words": "cent quatre-vingt-treize soixante et onze", "content_digits": "193 71"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 431, "content_words": "quatre cent trente et un", "content_digits": "431"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 862, "content_words": "huit cent soixante-deux", "content_digits": "862"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 283, "content_words": "deux cent quatre-vingt-trois", "content_digits": "283"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 728, "content_words": "sept cent vingt-huit", "content_digits": "728"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [732, 111], "content_words": "cent onze sept cent trente-deux", "content_digits": "732 111"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [203, 202], "content_words": "deux cent deux deux cent trois", "content_digits": "203 202"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [226, 455], "content_words": "deux cent vingt-six quatre cent cinquante-cinq", "content_digits": "226 455"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [700, 787], "content_words": "sept cents sept cent quatre-vingt-sept", "content_digits": "700 787"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 154, "content_words": "cent cinquante-quatre", "content_digits": "154"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 506, "content_words": "cinq cent six", "content_digits": "506"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 544, "content_words": "cinq cent quarante-quatre", "content_digits": "544"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 705, "content_words": "sept cent cinq", "content_digits": "705"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [383, 131], "content_words": "cent trente et un trois cent quatre-vingt-trois", "content_digits": "383 131"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 609, "content_words": "six cent neuf", "content_digits": "609"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [969, 905], "content_words": "neuf cent cinq neuf cent soixante-neuf", "content_digits": "969 905"}
+{"task": "A", "lang": "fr", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [27, 109], "content_words": "vingt-sept cent neuf", "content_digits": "27 109"}

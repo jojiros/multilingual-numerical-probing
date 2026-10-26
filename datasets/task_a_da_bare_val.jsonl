@@ -1,0 +1,100 @@
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [92, 644], "content_words": "tooghalvfems sekshundrede og fireogfyrre", "content_digits": "92 644"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 809, "content_words": "ottehundrede og ni", "content_digits": "809"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 324, "content_words": "trehundrede og fireogtyve", "content_digits": "324"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 716, "content_words": "syvhundrede og seksten", "content_digits": "716"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [135, 189], "content_words": "ethundrede og femogtredive ethundrede og niogfirs", "content_digits": "135 189"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 188, "content_words": "ethundrede og otteogfirs", "content_digits": "188"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 51, "content_words": "enoghalvtreds", "content_digits": "51"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [126, 49], "content_words": "ethundrede og seksogtyve niogfyrre", "content_digits": "126 49"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 751, "content_words": "syvhundrede og enoghalvtreds", "content_digits": "751"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [465, 140], "content_words": "ethundrede og fyrre firehundrede og femogtres", "content_digits": "465 140"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [210, 188], "content_words": "ethundrede og otteogfirs tohundrede og ti", "content_digits": "210 188"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 220, "content_words": "tohundrede og tyve", "content_digits": "220"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [360, 115], "content_words": "ethundrede og femten trehundrede og tres", "content_digits": "360 115"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [460, 712], "content_words": "syvhundrede og tolv firehundrede og tres", "content_digits": "460 712"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 967, "content_words": "nihundrede og syvogtres", "content_digits": "967"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [884, 891], "content_words": "ottehundrede og fireogfirs ottehundrede og enoghalvfems", "content_digits": "884 891"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [58, 957], "content_words": "otteoghalvtreds nihundrede og syvoghalvtreds", "content_digits": "58 957"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 567, "content_words": "femhundrede og syvogtres", "content_digits": "567"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [930, 180], "content_words": "nihundrede og tredive ethundrede og firs", "content_digits": "930 180"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 647, "content_words": "sekshundrede og syvogfyrre", "content_digits": "647"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [569, 662], "content_words": "femhundrede og niogtres sekshundrede og toogtres", "content_digits": "569 662"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [102, 705], "content_words": "syvhundrede og fem ethundrede og to", "content_digits": "102 705"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 78, "content_words": "otteoghalvfjerds", "content_digits": "78"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 914, "content_words": "nihundrede og fjorten", "content_digits": "914"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [943, 142], "content_words": "ethundrede og toogfyrre nihundrede og treogfyrre", "content_digits": "943 142"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 156, "content_words": "ethundrede og seksoghalvtreds", "content_digits": "156"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [312, 65], "content_words": "femogtres trehundrede og tolv", "content_digits": "312 65"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 915, "content_words": "nihundrede og femten", "content_digits": "915"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [392, 871], "content_words": "ottehundrede og enoghalvfjerds trehundrede og tooghalvfems", "content_digits": "392 871"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [767, 319], "content_words": "syvhundrede og syvogtres trehundrede og nitten", "content_digits": "767 319"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 376, "content_words": "trehundrede og seksoghalvfjerds", "content_digits": "376"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 738, "content_words": "syvhundrede og otteogtredive", "content_digits": "738"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [589, 600], "content_words": "sekshundrede femhundrede og niogfirs", "content_digits": "589 600"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 171, "content_words": "ethundrede og enoghalvfjerds", "content_digits": "171"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 715, "content_words": "syvhundrede og femten", "content_digits": "715"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 241, "content_words": "tohundrede og enogfyrre", "content_digits": "241"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 972, "content_words": "nihundrede og tooghalvfjerds", "content_digits": "972"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 125, "content_words": "ethundrede og femogtyve", "content_digits": "125"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 624, "content_words": "sekshundrede og fireogtyve", "content_digits": "624"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [796, 530], "content_words": "syvhundrede og seksoghalvfems femhundrede og tredive", "content_digits": "796 530"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [522, 738], "content_words": "syvhundrede og otteogtredive femhundrede og toogtyve", "content_digits": "522 738"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [91, 579], "content_words": "enoghalvfems femhundrede og nioghalvfjerds", "content_digits": "91 579"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 256, "content_words": "tohundrede og seksoghalvtreds", "content_digits": "256"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [787, 413], "content_words": "syvhundrede og syvogfirs firehundrede og tretten", "content_digits": "787 413"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [767, 261], "content_words": "syvhundrede og syvogtres tohundrede og enogtres", "content_digits": "767 261"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [859, 76], "content_words": "ottehundrede og nioghalvtreds seksoghalvfjerds", "content_digits": "859 76"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 888, "content_words": "ottehundrede og otteogfirs", "content_digits": "888"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 232, "content_words": "tohundrede og toogtredive", "content_digits": "232"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 714, "content_words": "syvhundrede og fjorten", "content_digits": "714"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [122, 726], "content_words": "syvhundrede og seksogtyve ethundrede og toogtyve", "content_digits": "122 726"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [773, 533], "content_words": "femhundrede og treogtredive syvhundrede og treoghalvfjerds", "content_digits": "773 533"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [773, 265], "content_words": "syvhundrede og treoghalvfjerds tohundrede og femogtres", "content_digits": "773 265"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 418, "content_words": "firehundrede og atten", "content_digits": "418"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 18, "content_words": "atten", "content_digits": "18"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 709, "content_words": "syvhundrede og ni", "content_digits": "709"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 420, "content_words": "firehundrede og tyve", "content_digits": "420"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [116, 965], "content_words": "nihundrede og femogtres ethundrede og seksten", "content_digits": "116 965"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [923, 67], "content_words": "nihundrede og treogtyve syvogtres", "content_digits": "923 67"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [469, 597], "content_words": "femhundrede og syvoghalvfems firehundrede og niogtres", "content_digits": "469 597"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [789, 227], "content_words": "tohundrede og syvogtyve syvhundrede og niogfirs", "content_digits": "789 227"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [921, 241], "content_words": "nihundrede og enogtyve tohundrede og enogfyrre", "content_digits": "921 241"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [83, 92], "content_words": "treogfirs tooghalvfems", "content_digits": "83 92"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [598, 279], "content_words": "tohundrede og nioghalvfjerds femhundrede og otteoghalvfems", "content_digits": "598 279"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [123, 808], "content_words": "ethundrede og treogtyve ottehundrede og otte", "content_digits": "123 808"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 403, "content_words": "firehundrede og tre", "content_digits": "403"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [315, 55], "content_words": "femoghalvtreds trehundrede og femten", "content_digits": "315 55"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [425, 739], "content_words": "firehundrede og femogtyve syvhundrede og niogtredive", "content_digits": "425 739"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [134, 88], "content_words": "ethundrede og fireogtredive otteogfirs", "content_digits": "134 88"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [451, 430], "content_words": "firehundrede og enoghalvtreds firehundrede og tredive", "content_digits": "451 430"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [762, 874], "content_words": "syvhundrede og toogtres ottehundrede og fireoghalvfjerds", "content_digits": "762 874"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 523, "content_words": "femhundrede og treogtyve", "content_digits": "523"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [110, 637], "content_words": "sekshundrede og syvogtredive ethundrede og ti", "content_digits": "110 637"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 354, "content_words": "trehundrede og fireoghalvtreds", "content_digits": "354"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 42, "content_words": "toogfyrre", "content_digits": "42"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 895, "content_words": "ottehundrede og femoghalvfems", "content_digits": "895"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [527, 716], "content_words": "syvhundrede og seksten femhundrede og syvogtyve", "content_digits": "527 716"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 61, "content_words": "enogtres", "content_digits": "61"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [620, 13], "content_words": "sekshundrede og tyve tretten", "content_digits": "620 13"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 741, "content_words": "syvhundrede og enogfyrre", "content_digits": "741"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [19, 356], "content_words": "trehundrede og seksoghalvtreds nitten", "content_digits": "19 356"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 687, "content_words": "sekshundrede og syvogfirs", "content_digits": "687"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [546, 129], "content_words": "femhundrede og seksogfyrre ethundrede og niogtyve", "content_digits": "546 129"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [211, 562], "content_words": "tohundrede og elleve femhundrede og toogtres", "content_digits": "211 562"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 490, "content_words": "firehundrede og halvfems", "content_digits": "490"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 702, "content_words": "syvhundrede og to", "content_digits": "702"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 180, "content_words": "ethundrede og firs", "content_digits": "180"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 297, "content_words": "tohundrede og syvoghalvfems", "content_digits": "297"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [868, 429], "content_words": "firehundrede og niogtyve ottehundrede og otteogtres", "content_digits": "868 429"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [690, 1], "content_words": "sekshundrede og halvfems et", "content_digits": "690 1"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 551, "content_words": "femhundrede og enoghalvtreds", "content_digits": "551"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 652, "content_words": "sekshundrede og tooghalvtreds", "content_digits": "652"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 378, "content_words": "trehundrede og otteoghalvfjerds", "content_digits": "378"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [259, 368], "content_words": "trehundrede og otteogtres tohundrede og nioghalvtreds", "content_digits": "259 368"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 223, "content_words": "tohundrede og treogtyve", "content_digits": "223"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [63, 19], "content_words": "treogtres nitten", "content_digits": "63 19"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 14, "content_words": "fjorten", "content_digits": "14"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [864, 738], "content_words": "ottehundrede og fireogtres syvhundrede og otteogtredive", "content_digits": "864 738"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 84, "content_words": "fireogfirs", "content_digits": "84"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 0, "label_text": "ungrammatical", "number": null, "number_parts": [3, 63], "content_words": "treogtres tre", "content_digits": "3 63"}
+{"task": "A", "lang": "da", "variant": "bare", "label": 1, "label_text": "grammatical", "number": 477, "content_words": "firehundrede og syvoghalvfjerds", "content_digits": "477"}
