@@ -1,123 +1,85 @@
 """
-evaluate.py
-===========
-Runs Task A and Task B prompts against the Groq API (LLaMA 3)
-and saves results to results/ folder.
+Query Llama-3.1-8B-Instruct on the Task A / Task B test sets and save
+all responses to results/.
 
-Requirements:
-    pip install groq
+Provider note: early runs used Groq (llama-3.1-8b-instant), which
+deprecated the model on 2026-08-16. Remaining runs used DeepInfra, which
+serves the same Meta-Llama-3.1-8B-Instruct weights. This script supports
+DeepInfra only. Each result record stores model, provider and timestamp.
 
 Usage:
-    1. Set your Groq API key:
-       export GROQ_API_KEY="your_key_here"
-       OR edit GROQ_API_KEY variable below.
+    export DEEPINFRA_API_KEY="your_key_here"   # or set it in .env
+    python evaluate.py                         # run all conditions
+    python evaluate.py --task B --lang en --variant bare --format words
+    python evaluate.py --dry-run --task B --lang en   # print prompts only
 
-    2. Run:
-       python evaluate.py
-
-    Options:
-       --task A          # only run Task A
-       --task B          # only run Task B
-       --lang en         # only run English
-       --variant bare    # only run bare variant
-       --format words    # only run words format
-       --split test      # which split to evaluate (default: test)
-       --dry-run         # print prompts without calling API
+Existing result files are skipped, so interrupted runs can be resumed.
 """
 
+import argparse
+import json
 import os
 import sys
-import json
 import time
-import argparse
-import random
+from datetime import datetime, timezone
 from pathlib import Path
 
-try:
-    from groq import Groq
-    GROQ_AVAILABLE = True
-except ImportError:
-    GROQ_AVAILABLE = False
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()  # reads DEEPINFRA_API_KEY from .env if present
 
 # ─────────────────────────────────────────────
-# CONFIG — edit your key here if not using env var
+# Config
 # ─────────────────────────────────────────────
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "YOUR_GROQ_API_KEY_HERE")
-MODEL = "llama-3.1-8b-instant"       # free, fast, multilingual
-# Alternatives: "llama-3.1-70b-versatile", "mixtral-8x7b-32768", "gemma2-9b-it"
+PROVIDER = "deepinfra"
+BASE_URL = "https://api.deepinfra.com/v1/openai"
+MODEL = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+TEMPERATURE = 0.0
+MAX_TOKENS = 10
+
+RATE_LIMIT_DELAY = 0.2  # seconds between requests (a polite pace, not a hard limit)
+MAX_RETRIES = 3
 
 DATASETS_DIR = Path("datasets")
 RESULTS_DIR = Path("results")
-RESULTS_DIR.mkdir(exist_ok=True)
+PROMPTS_DIR = Path(__file__).parent / "prompts"
 
-RATE_LIMIT_DELAY = 0.5   # seconds between requests (be nice to free tier)
-MAX_RETRIES = 3
-
-LANGUAGES = ["en", "fr", "da", "ja"]
+LANGUAGES = {"en": "English", "fr": "French", "da": "Danish", "ja": "Japanese"}
 VARIANTS = ["bare", "sentence"]
-FORMATS = ["words", "digits", "mixed"]
+
+# Task A has no separate "mixed" format: an expression is a single number,
+# so "mixed" would be identical to "digits".
+FORMATS = {"A": ["words", "digits"], "B": ["words", "digits", "mixed"]}
 
 
 # ─────────────────────────────────────────────
-# PROMPT BUILDERS
+# Prompts
 # ─────────────────────────────────────────────
 
-TASK_A_SYSTEM = """You are a linguistic expert. Your job is to judge whether a number expression is grammatically valid in the given language.
-Respond with ONLY one word: "grammatical" or "ungrammatical". No explanation."""
-
-TASK_B_SYSTEM = """You are a mathematics expert. Your job is to compare two quantities and determine which is larger.
-Respond with ONLY the letter "A" or "B" to indicate which quantity is larger. No explanation."""
+def load_prompt(name: str) -> str:
+    return (PROMPTS_DIR / name).read_text(encoding="utf-8").rstrip("\n")
 
 
-def build_task_a_prompt(record: dict, fmt: str, lang: str) -> str:
-    """Build prompt for Task A (grammaticality judgment)."""
-    lang_name = {
-        "en": "English", "fr": "French", "da": "Danish", "ja": "Japanese"
-    }[lang]
-
-    content = record["content_words"] if fmt == "words" else record["content_digits"]
-
-    return f"""Language: {lang_name}
-Number expression: "{content}"
-
-Is this number expression grammatically valid in {lang_name}?
-Answer with ONLY one word: grammatical or ungrammatical."""
+SYSTEM_PROMPTS = {"A": load_prompt("task_a_system.txt"), "B": load_prompt("task_b_system.txt")}
+USER_TEMPLATES = {"A": load_prompt("task_a_user.txt"), "B": load_prompt("task_b_user.txt")}
 
 
-def build_task_b_prompt(record: dict, fmt: str) -> str:
-    """Build prompt for Task B (value comparison)."""
-    if fmt == "words":
-        a_val = record["a_words"]
-        b_val = record["b_words"]
-    elif fmt == "digits":
-        a_val = record["a_digits"]
-        b_val = record["b_digits"]
-    else:  # mixed: A=digits, B=words
-        a_val = record["a_mixed"]
-        b_val = record["b_mixed"]
-
-    return f"""Which quantity is larger?
-
-A: {a_val}
-B: {b_val}
-
-Answer with ONLY the letter A or B."""
+def build_prompt(task: str, record: dict, fmt: str) -> str:
+    """Fill the user prompt template for one record and format."""
+    if task == "A":
+        content = record["content_words"] if fmt == "words" else record["content_digits"]
+        return USER_TEMPLATES["A"].format(lang_name=LANGUAGES[record["lang"]], content=content)
+    # Task B: pick the A/B fields for this format (words, digits or mixed)
+    return USER_TEMPLATES["B"].format(a=record[f"a_{fmt}"], b=record[f"b_{fmt}"])
 
 
 # ─────────────────────────────────────────────
-# API CALL
+# Model call and parsing
 # ─────────────────────────────────────────────
 
-def call_groq(client, system_prompt: str, user_prompt: str, dry_run: bool = False) -> str:
-    """Call Groq API and return the model's response text."""
-    if dry_run:
-        print("\n--- SYSTEM ---")
-        print(system_prompt)
-        print("--- USER ---")
-        print(user_prompt)
-        print("--- END ---\n")
-        return "grammatical"  # dummy
-
+def call_llm(client, system_prompt: str, user_prompt: str) -> str:
+    """Return the model's reply in lower case, or "ERROR" after repeated failures."""
     for attempt in range(MAX_RETRIES):
         try:
             response = client.chat.completions.create(
@@ -126,220 +88,135 @@ def call_groq(client, system_prompt: str, user_prompt: str, dry_run: bool = Fals
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
                 ],
-                max_tokens=10,
-                temperature=0.0,   # deterministic
+                max_tokens=MAX_TOKENS,
+                temperature=TEMPERATURE,
             )
             return response.choices[0].message.content.strip().lower()
         except Exception as e:
             if attempt < MAX_RETRIES - 1:
                 wait = 2 ** attempt
-                print(f"  [Retry {attempt+1}] Error: {e}. Waiting {wait}s...")
+                print(f"    [retry {attempt + 1}] {e}. Waiting {wait}s...")
                 time.sleep(wait)
             else:
-                print(f"  [FAILED] {e}")
+                print(f"    [failed] {e}")
                 return "ERROR"
 
 
-# ─────────────────────────────────────────────
-# RESPONSE PARSING
-# ─────────────────────────────────────────────
-
-def parse_task_a_response(response: str) -> str:
-    """Parse model response to 'grammatical' or 'ungrammatical'."""
-    r = response.lower().strip()
-    if "ungrammatical" in r:
-        return "ungrammatical"
-    if "grammatical" in r:
-        return "grammatical"
-    return "invalid"
-
-
-def parse_task_b_response(response: str) -> str:
-    """Parse model response to 'A' or 'B'."""
-    r = response.upper().strip()
-    if r.startswith("A"):
-        return "A"
-    if r.startswith("B"):
-        return "B"
+def parse_response(task: str, response: str) -> str:
+    """Map a raw reply to a label, or "invalid" if it doesn't match."""
+    r = response.strip().lower()
+    if task == "A":
+        if "ungrammatical" in r:
+            return "ungrammatical"
+        if "grammatical" in r:
+            return "grammatical"
+    else:
+        if r.startswith("a"):
+            return "A"
+        if r.startswith("b"):
+            return "B"
     return "invalid"
 
 
 # ─────────────────────────────────────────────
-# EVALUATION LOOP
+# Evaluation
 # ─────────────────────────────────────────────
 
-def evaluate_task_a(client, lang: str, variant: str, fmt: str, split: str, dry_run: bool):
-    """Evaluate Task A for one condition."""
-    data_path = DATASETS_DIR / f"task_a_{lang}_{variant}_{split}.jsonl"
+def load_jsonl(path: Path) -> list:
+    with open(path, encoding="utf-8") as f:
+        return [json.loads(line) for line in f]
+
+
+def evaluate_condition(client, task, lang, variant, fmt, split, dry_run):
+    """Run one task x language x variant x format condition."""
+    t = task.lower()
+    data_path = DATASETS_DIR / f"task_{t}_{lang}_{variant}_{split}.jsonl"
+    result_path = RESULTS_DIR / f"task_{t}_{lang}_{variant}_{fmt}_{split}.jsonl"
+
     if not data_path.exists():
-        print(f"  [SKIP] {data_path} not found.")
+        print(f"  [skip] {data_path} not found (run generate_dataset.py)")
+        return
+    if result_path.exists() and not dry_run:
+        print(f"  [skip] already evaluated: {result_path}")
         return
 
-    result_path = RESULTS_DIR / f"task_a_{lang}_{variant}_{fmt}_{split}.jsonl"
-    if result_path.exists():
-        print(f"  [SKIP] Already evaluated: {result_path}")
+    print(f"  Task {task} | {lang} | {variant} | {fmt}")
+    records = load_jsonl(data_path)
+    system_prompt = SYSTEM_PROMPTS[task]
+
+    if dry_run:
+        print(f"--- SYSTEM ---\n{system_prompt}\n--- USER ---\n{build_prompt(task, records[0], fmt)}\n")
         return
 
-    print(f"  Evaluating Task A | lang={lang} | variant={variant} | format={fmt} | split={split}")
+    results, correct = [], 0
+    for i, rec in enumerate(records, start=1):
+        raw = call_llm(client, system_prompt, build_prompt(task, rec, fmt))
+        pred = parse_response(task, raw)
+        is_correct = pred == rec["label_text"]
+        correct += is_correct
 
-    records = []
-    with open(data_path, encoding="utf-8") as f:
-        for line in f:
-            records.append(json.loads(line))
-
-    results = []
-    correct = 0
-
-    for i, rec in enumerate(records):
-        user_prompt = build_task_a_prompt(rec, fmt, lang)
-        raw = call_groq(client, TASK_A_SYSTEM, user_prompt, dry_run)
-        pred = parse_task_a_response(raw)
-
-        gold_text = rec["label_text"]   # "grammatical" or "ungrammatical"
-        is_correct = (pred == gold_text)
-        if is_correct:
-            correct += 1
-
-        result_rec = {
+        results.append({
             **rec,
             "format": fmt,
             "prediction": pred,
             "raw_response": raw,
             "correct": is_correct,
-        }
-        results.append(result_rec)
+            "model": MODEL,
+            "provider": PROVIDER,
+            "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        })
 
-        if (i + 1) % 50 == 0:
-            acc = correct / (i + 1)
-            print(f"    [{i+1}/{len(records)}] Running accuracy: {acc:.3f}")
-
+        if i % 50 == 0:
+            print(f"    [{i}/{len(records)}] running accuracy: {correct / i:.3f}")
         time.sleep(RATE_LIMIT_DELAY)
 
-    # Save results
+    # Written only once the whole condition is done, so a crash never leaves
+    # a half-finished file that would later be skipped as "already evaluated".
     with open(result_path, "w", encoding="utf-8") as f:
         for r in results:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
-
-    final_acc = correct / len(records) if records else 0
-    print(f"  -> Accuracy: {final_acc:.3f} ({correct}/{len(records)})")
-    return final_acc
-
-
-def evaluate_task_b(client, lang: str, variant: str, fmt: str, split: str, dry_run: bool):
-    """Evaluate Task B for one condition."""
-    data_path = DATASETS_DIR / f"task_b_{lang}_{variant}_{split}.jsonl"
-    if not data_path.exists():
-        print(f"  [SKIP] {data_path} not found.")
-        return
-
-    result_path = RESULTS_DIR / f"task_b_{lang}_{variant}_{fmt}_{split}.jsonl"
-    if result_path.exists():
-        print(f"  [SKIP] Already evaluated: {result_path}")
-        return
-
-    print(f"  Evaluating Task B | lang={lang} | variant={variant} | format={fmt} | split={split}")
-
-    records = []
-    with open(data_path, encoding="utf-8") as f:
-        for line in f:
-            records.append(json.loads(line))
-
-    results = []
-    correct = 0
-
-    for i, rec in enumerate(records):
-        user_prompt = build_task_b_prompt(rec, fmt)
-        raw = call_groq(client, TASK_B_SYSTEM, user_prompt, dry_run)
-        pred = parse_task_b_response(raw)
-
-        gold = rec["label_text"]   # "A" or "B"
-        is_correct = (pred == gold)
-        if is_correct:
-            correct += 1
-
-        result_rec = {
-            **rec,
-            "format": fmt,
-            "prediction": pred,
-            "raw_response": raw,
-            "correct": is_correct,
-        }
-        results.append(result_rec)
-
-        if (i + 1) % 50 == 0:
-            acc = correct / (i + 1)
-            print(f"    [{i+1}/{len(records)}] Running accuracy: {acc:.3f}")
-
-        time.sleep(RATE_LIMIT_DELAY)
-
-    # Save results
-    with open(result_path, "w", encoding="utf-8") as f:
-        for r in results:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
-
-    final_acc = correct / len(records) if records else 0
-    print(f"  -> Accuracy: {final_acc:.3f} ({correct}/{len(records)})")
-    return final_acc
+    print(f"  -> accuracy {correct / len(records):.3f} ({correct}/{len(records)})")
 
 
 # ─────────────────────────────────────────────
-# MAIN
+# Main
 # ─────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate numerical probing tasks via Groq API")
+    parser = argparse.ArgumentParser(description="Evaluate the numerical probing tasks.")
     parser.add_argument("--task", choices=["A", "B", "both"], default="both")
-    parser.add_argument("--lang", choices=LANGUAGES + ["all"], default="all")
+    parser.add_argument("--lang", choices=list(LANGUAGES) + ["all"], default="all")
     parser.add_argument("--variant", choices=VARIANTS + ["all"], default="all")
-    parser.add_argument("--format", choices=FORMATS + ["all"], default="all")
+    parser.add_argument("--format", choices=["words", "digits", "mixed", "all"], default="all")
     parser.add_argument("--split", choices=["train", "val", "test"], default="test")
-    parser.add_argument("--dry-run", action="store_true", help="Print prompts without calling API")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="print one example prompt per condition, no API calls")
     args = parser.parse_args()
 
-    # Validate API key
-    if not args.dry_run:
-        if GROQ_API_KEY == "YOUR_GROQ_API_KEY_HERE":
-            print("[ERROR] Please set your GROQ_API_KEY.")
-            print("        export GROQ_API_KEY='your_key_here'")
-            print("        OR edit the GROQ_API_KEY variable in evaluate.py")
-            sys.exit(1)
-        if not GROQ_AVAILABLE:
-            print("[ERROR] groq package not installed. Run: pip install groq")
-            sys.exit(1)
-
     client = None
-    if not args.dry_run and GROQ_AVAILABLE:
-        client = Groq(api_key=GROQ_API_KEY)
-        print(f"Using model: {MODEL}")
+    if not args.dry_run:
+        api_key = os.environ.get("DEEPINFRA_API_KEY")
+        if not api_key:
+            sys.exit("DEEPINFRA_API_KEY is not set. Add it to .env or run:\n"
+                     "  export DEEPINFRA_API_KEY='your_key_here'")
+        client = OpenAI(api_key=api_key, base_url=BASE_URL)
+        RESULTS_DIR.mkdir(exist_ok=True)
+        print(f"Model: {MODEL} via {PROVIDER}")
 
-    langs = LANGUAGES if args.lang == "all" else [args.lang]
-    variants = VARIANTS if args.variant == "all" else [args.variant]
-    formats = FORMATS if args.format == "all" else [args.format]
     tasks = ["A", "B"] if args.task == "both" else [args.task]
-
-    print("=" * 60)
-    print("Starting Evaluation")
-    print(f"  Tasks:    {tasks}")
-    print(f"  Langs:    {langs}")
-    print(f"  Variants: {variants}")
-    print(f"  Formats:  {formats}")
-    print(f"  Split:    {args.split}")
-    print("=" * 60)
+    langs = list(LANGUAGES) if args.lang == "all" else [args.lang]
+    variants = VARIANTS if args.variant == "all" else [args.variant]
 
     for task in tasks:
-        print(f"\n{'='*20} TASK {task} {'='*20}")
+        formats = FORMATS[task] if args.format == "all" else [args.format]
+        formats = [f for f in formats if f in FORMATS[task]]  # e.g. no "mixed" for Task A
+        print(f"\n===== Task {task} =====")
         for lang in langs:
             for variant in variants:
                 for fmt in formats:
-                    if task == "A":
-                        evaluate_task_a(client, lang, variant, fmt, args.split, args.dry_run)
-                    else:
-                        evaluate_task_b(client, lang, variant, fmt, args.split, args.dry_run)
+                    evaluate_condition(client, task, lang, variant, fmt, args.split, args.dry_run)
 
-    print("\n" + "=" * 60)
-    print("Evaluation complete! Results saved to ./results/")
-    print("Run python analyze.py to generate accuracy tables and plots.")
-    print("=" * 60)
+    print("\nDone. Next: python analyze.py")
 
 
 if __name__ == "__main__":

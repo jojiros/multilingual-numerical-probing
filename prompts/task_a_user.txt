@@ -1,0 +1,5 @@
+Language: {lang_name}
+Number expression: "{content}"
+
+Is this number expression grammatically valid in {lang_name}?
+Answer with ONLY one word: grammatical or ungrammatical.

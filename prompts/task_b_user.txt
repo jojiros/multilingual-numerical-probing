@@ -1,0 +1,6 @@
+Which quantity is larger?
+
+A: {a}
+B: {b}
+
+Answer with ONLY the letter A or B.

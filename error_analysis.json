@@ -1,0 +1,317 @@
+{
+  "api_errors": 2,
+  "unparseable_responses": 0,
+  "unparseable_examples": [],
+  "error_counts_by_condition": {
+    "task_A_da_bare_digits": 119,
+    "task_A_da_bare_words": 48,
+    "task_A_da_sentence_digits": 106,
+    "task_A_da_sentence_words": 68,
+    "task_A_en_bare_digits": 70,
+    "task_A_en_bare_words": 5,
+    "task_A_en_sentence_digits": 78,
+    "task_A_en_sentence_words": 20,
+    "task_A_fr_bare_digits": 83,
+    "task_A_fr_bare_words": 36,
+    "task_A_fr_sentence_digits": 87,
+    "task_A_fr_sentence_words": 28,
+    "task_A_ja_bare_digits": 3,
+    "task_A_ja_bare_words": 73,
+    "task_A_ja_sentence_digits": 85,
+    "task_A_ja_sentence_words": 69,
+    "task_B_da_bare_digits": 2,
+    "task_B_da_bare_mixed": 106,
+    "task_B_da_bare_words": 103,
+    "task_B_da_sentence_digits": 28,
+    "task_B_da_sentence_mixed": 83,
+    "task_B_da_sentence_words": 94,
+    "task_B_en_bare_mixed": 68,
+    "task_B_en_bare_words": 73,
+    "task_B_en_sentence_digits": 24,
+    "task_B_en_sentence_mixed": 58,
+    "task_B_en_sentence_words": 34,
+    "task_B_fr_bare_digits": 1,
+    "task_B_fr_bare_mixed": 96,
+    "task_B_fr_bare_words": 95,
+    "task_B_fr_sentence_digits": 38,
+    "task_B_fr_sentence_mixed": 65,
+    "task_B_fr_sentence_words": 65,
+    "task_B_ja_bare_digits": 2,
+    "task_B_ja_bare_mixed": 78,
+    "task_B_ja_bare_words": 70,
+    "task_B_ja_sentence_digits": 16,
+    "task_B_ja_sentence_mixed": 56,
+    "task_B_ja_sentence_words": 36
+  },
+  "answer_share_by_condition": {
+    "task_A_da_bare_digits": {
+      "grammatical": 0.98,
+      "ungrammatical": 0.015,
+      "invalid": 0.005
+    },
+    "task_A_da_bare_words": {
+      "grammatical": 0.58,
+      "ungrammatical": 0.42
+    },
+    "task_A_da_sentence_digits": {
+      "grammatical": 0.955,
+      "ungrammatical": 0.045
+    },
+    "task_A_da_sentence_words": {
+      "grammatical": 0.565,
+      "ungrammatical": 0.435
+    },
+    "task_A_en_bare_digits": {
+      "grammatical": 0.775,
+      "ungrammatical": 0.225
+    },
+    "task_A_en_bare_words": {
+      "ungrammatical": 0.55,
+      "grammatical": 0.45
+    },
+    "task_A_en_sentence_digits": {
+      "grammatical": 0.81,
+      "ungrammatical": 0.185,
+      "invalid": 0.005
+    },
+    "task_A_en_sentence_words": {
+      "grammatical": 0.525,
+      "ungrammatical": 0.475
+    },
+    "task_A_fr_bare_digits": {
+      "grammatical": 0.875,
+      "ungrammatical": 0.125
+    },
+    "task_A_fr_bare_words": {
+      "grammatical": 0.62,
+      "ungrammatical": 0.38
+    },
+    "task_A_fr_sentence_digits": {
+      "grammatical": 0.905,
+      "ungrammatical": 0.095
+    },
+    "task_A_fr_sentence_words": {
+      "grammatical": 0.57,
+      "ungrammatical": 0.43
+    },
+    "task_A_ja_bare_digits": {
+      "ungrammatical": 0.5,
+      "grammatical": 0.5
+    },
+    "task_A_ja_bare_words": {
+      "grammatical": 0.83,
+      "ungrammatical": 0.17
+    },
+    "task_A_ja_sentence_digits": {
+      "grammatical": 0.78,
+      "ungrammatical": 0.22
+    },
+    "task_A_ja_sentence_words": {
+      "grammatical": 0.8,
+      "ungrammatical": 0.2
+    },
+    "task_B_da_bare_digits": {
+      "B": 0.525,
+      "A": 0.475
+    },
+    "task_B_da_bare_mixed": {
+      "A": 0.995,
+      "B": 0.005
+    },
+    "task_B_da_bare_words": {
+      "A": 0.98,
+      "B": 0.02
+    },
+    "task_B_da_sentence_digits": {
+      "A": 0.655,
+      "B": 0.345
+    },
+    "task_B_da_sentence_mixed": {
+      "A": 0.89,
+      "B": 0.11
+    },
+    "task_B_da_sentence_words": {
+      "A": 0.985,
+      "B": 0.015
+    },
+    "task_B_en_bare_digits": {
+      "A": 0.515,
+      "B": 0.485
+    },
+    "task_B_en_bare_mixed": {
+      "A": 0.855,
+      "B": 0.145
+    },
+    "task_B_en_bare_words": {
+      "A": 0.88,
+      "B": 0.12
+    },
+    "task_B_en_sentence_digits": {
+      "A": 0.635,
+      "B": 0.365
+    },
+    "task_B_en_sentence_mixed": {
+      "A": 0.805,
+      "B": 0.195
+    },
+    "task_B_en_sentence_words": {
+      "A": 0.685,
+      "B": 0.315
+    },
+    "task_B_fr_bare_digits": {
+      "A": 0.505,
+      "B": 0.495
+    },
+    "task_B_fr_bare_mixed": {
+      "A": 0.98,
+      "B": 0.02
+    },
+    "task_B_fr_bare_words": {
+      "A": 0.945,
+      "B": 0.055
+    },
+    "task_B_fr_sentence_digits": {
+      "A": 0.69,
+      "B": 0.31
+    },
+    "task_B_fr_sentence_mixed": {
+      "A": 0.795,
+      "B": 0.205
+    },
+    "task_B_fr_sentence_words": {
+      "A": 0.765,
+      "B": 0.235
+    },
+    "task_B_ja_bare_digits": {
+      "A": 0.52,
+      "B": 0.48
+    },
+    "task_B_ja_bare_mixed": {
+      "A": 0.9,
+      "B": 0.1
+    },
+    "task_B_ja_bare_words": {
+      "A": 0.86,
+      "B": 0.14
+    },
+    "task_B_ja_sentence_digits": {
+      "A": 0.6,
+      "B": 0.4
+    },
+    "task_B_ja_sentence_mixed": {
+      "A": 0.69,
+      "B": 0.31
+    },
+    "task_B_ja_sentence_words": {
+      "A": 0.7,
+      "B": 0.3
+    }
+  },
+  "most_confused": [
+    {
+      "condition": "task_A_da_bare_digits",
+      "error_count": 119,
+      "examples": [
+        {
+          "prediction": "grammatical",
+          "gold": "ungrammatical",
+          "raw": "grammatical"
+        },
+        {
+          "prediction": "grammatical",
+          "gold": "ungrammatical",
+          "raw": "grammatical"
+        },
+        {
+          "prediction": "grammatical",
+          "gold": "ungrammatical",
+          "raw": "grammatical"
+        }
+      ]
+    },
+    {
+      "condition": "task_A_da_sentence_digits",
+      "error_count": 106,
+      "examples": [
+        {
+          "prediction": "grammatical",
+          "gold": "ungrammatical",
+          "raw": "grammatical"
+        },
+        {
+          "prediction": "grammatical",
+          "gold": "ungrammatical",
+          "raw": "grammatical"
+        },
+        {
+          "prediction": "grammatical",
+          "gold": "ungrammatical",
+          "raw": "grammatical"
+        }
+      ]
+    },
+    {
+      "condition": "task_B_da_bare_mixed",
+      "error_count": 106,
+      "examples": [
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        },
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        },
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        }
+      ]
+    },
+    {
+      "condition": "task_B_da_bare_words",
+      "error_count": 103,
+      "examples": [
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        },
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        },
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        }
+      ]
+    },
+    {
+      "condition": "task_B_fr_bare_mixed",
+      "error_count": 96,
+      "examples": [
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        },
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        },
+        {
+          "prediction": "A",
+          "gold": "B",
+          "raw": "a"
+        }
+      ]
+    }
+  ]
+}

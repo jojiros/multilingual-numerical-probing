@@ -1,203 +1,121 @@
-# Multilingual Numerical Understanding — Probing via Prompting
+# Multilingual Prompting: Evaluation of Numerical Understanding in an Instruction-Tuned Language Model
 
-A term project investigating how well multilingual LLMs understand numbers
-across formats (digits, words, mixed) and languages (EN, FR, DA, JA).
+This project revisits the probing study of [Johnson et al. (2020)](https://aclanthology.org/2020.blackboxnlp-1.18/) with a prompt-based setup. Instead of training probing classifiers on frozen embeddings of BERT, DistilBERT and XLM, an instruction-tuned model (Llama-3.1-8B-Instruct) is asked directly, zero-shot. The original word-only design is extended with Arabic digits and a mixed digit/word format.
 
-Inspired by: *Johnson et al. (2020), "Probing for Multilingual Numerical
-Understanding in Transformer-Based Language Models"* — but modernized
-from probing classifiers to **prompt-based evaluation** using LLaMA 3 via Groq.
+> Term paper for the module *Advanced Topics in Computational Text and Media Science* (MA2NLP2003), M.Sc. Natural Language Processing, Trier University, Summer Semester 2026.
 
----
+### Research questions
 
-## Project Structure
-
-```
-numerical_probing/
-├── generate_dataset.py   # Step 1: generate all JSONL datasets
-├── evaluate.py           # Step 2: run prompts against Groq API
-├── analyze.py            # Step 3: compute accuracy + generate plots
-├── datasets/             # auto-created by generate_dataset.py
-├── results/              # auto-created by evaluate.py
-└── figures/              # auto-created by analyze.py
-```
+1. Do multilingual, instruction-tuned models perform better when numbers are presented as digits or as spelled-out words?
+2. Can such models generalise across numeric formats, e.g. recognising that "60" and "sixty" denote the same quantity?
+3. Do languages with structurally different number systems show systematically different patterns, and do they resemble those found by Johnson et al. (2020)?
 
 ---
 
-## Setup
+## Key findings
 
-### 1. Install dependencies
+- **Grammaticality (Task A) shows a three-against-one split.** English, French and Danish are more accurate with words than digits (e.g. English 0.975 vs 0.650, bare); Japanese shows the opposite (0.985 digits vs 0.635 words).
+- **The stated language affects bare digit strings.** Task A bare digit accuracy ranges from 0.405 (Danish) to 0.985 (Japanese), although the digit strings carry no language-specific information. The spread narrows in sentences (0.470–0.610).
+- **Value comparison (Task B) depends strongly on format.** Digits are near ceiling in every language (0.990–1.000, bare); words (0.485–0.650) and mixed pairs (0.470–0.660) are close to chance. Strong digit performance does not transfer to number words.
+- **Sentence context cuts both ways.** It generally lowers digit accuracy (in Task B in every language), but raises word accuracy in Task B in every language (e.g. English 0.635 → 0.830).
 
-```bash
-pip install num2words groq pandas matplotlib seaborn
-```
+## Results
 
-### 2. Get a free Groq API key
+Accuracy on 200 test items per condition. Full table: [`accuracy_summary.csv`](accuracy_summary.csv). All tables and figures are produced by `analyze.py` from the raw responses in [`results/`](results/).
 
-1. Go to https://console.groq.com
-2. Sign up (free, no credit card)
-3. Create an API key under "API Keys"
+**Task A — Is this number expression grammatical?**
 
-### 3. Set your API key
+| Variant | Format | English | French | Danish | Japanese |
+|---|---|---|---|---|---|
+| bare | words | **0.975** | 0.82 | 0.76 | 0.635 |
+| bare | digits | 0.65 | 0.585 | 0.405 | 0.985 |
+| sentence | words | 0.90 | 0.86 | 0.66 | 0.655 |
+| sentence | digits | 0.61 | 0.565 | 0.47 | 0.575 |
 
-```bash
-# Option A: environment variable (recommended)
-export GROQ_API_KEY="gsk_your_key_here"
+**Task B — Which number is larger?** (chance = 0.50)
 
-# Option B: edit evaluate.py line ~30
-GROQ_API_KEY = "gsk_your_key_here"
-```
+| Variant | Format | English | French | Danish | Japanese |
+|---|---|---|---|---|---|
+| bare | digits | **1.00** | **0.995** | **0.99** | **0.99** |
+| bare | words | 0.635 | 0.525 | 0.485 | 0.65 |
+| bare | mixed | 0.66 | 0.52 | 0.47 | 0.61 |
+| sentence | digits | 0.88 | 0.81 | 0.86 | 0.92 |
+| sentence | words | 0.83 | 0.675 | 0.53 | 0.82 |
+| sentence | mixed | 0.71 | 0.675 | 0.585 | 0.72 |
+
+![Task B heatmap](figures/task_B_bare_heatmap.png)
 
 ---
 
-## Running the Pipeline
+## Experimental setup
 
-### Step 1 — Generate datasets
+| | |
+|---|---|
+| **Model** | `meta-llama/Meta-Llama-3.1-8B-Instruct`, temperature 0, max 10 tokens |
+| **Languages** | English, French, Danish, Japanese (different number-system structures: decimal, partly vigesimal, vigesimal, kanji-based) |
+| **Range** | integers 1–999 |
+| **Prompting** | zero-shot, system + user prompt, one-word answer; templates in [`prompts/`](prompts/) |
+| **Variants** | *bare* (number alone) vs. *sentence* (number inside a short sentence); sentences in [`templates/`](templates/) |
+| **Formats** | *digits* (`60`), *words* (`sixty`), *mixed* (`60` vs. `seventy`, Task B only) |
+| **Test size** | 200 items per task × language × variant × format |
+| **Seed** | 42 (dataset generation is fully deterministic) |
+
+### Tasks
+
+**Task A — grammaticality.** Grammatical items are valid number expressions (`five hundred and two`); ungrammatical items concatenate two valid numbers (`fifty-five two hundred`). The model answers `grammatical` / `ungrammatical`.
+
+**Task B — value comparison.** Two quantities A and B; the model answers which is larger.
+
+---
+
+## Reproducing the results
 
 ```bash
-python generate_dataset.py
+git clone https://github.com/<you>/multilingual-numerical-probing.git
+cd multilingual-numerical-probing
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-Creates `datasets/` with JSONL files for each condition:
-- `task_a_{lang}_{variant}_{split}.jsonl`  (Task A: grammaticality)
-- `task_b_{lang}_{variant}_{split}.jsonl`  (Task B: value comparison)
-
-Conditions:
-- **Languages**: en, fr, da, ja
-- **Variants**: bare (numbers alone), sentence (numbers in context)
-- **Splits**: train, val, test
-
-### Step 2 — Evaluate
+Raw model outputs for every item are committed in [`results/`](results/), so the tables and figures can be rebuilt without an API key:
 
 ```bash
-# Evaluate everything (takes ~30-60 min on free Groq tier)
-python evaluate.py
-
-# Quick test: one condition only
-python evaluate.py --task B --lang en --variant bare --format words
-
-# Dry run (prints prompts, no API calls)
-python evaluate.py --dry-run --task B --lang en --variant bare
+python analyze.py             # accuracy_summary.csv, error_analysis.json, figures/
 ```
 
-**Formats evaluated** (added over original paper):
-| Format | Task A example | Task B example |
-|--------|---------------|----------------|
-| words  | "five hundred two" | "sixty" vs "seventy" |
-| digits | "502" | "60" vs "70" |
-| mixed  | — | "60" vs "seventy" |
-
-### Step 3 — Analyze
+To rerun everything from scratch:
 
 ```bash
+cp .env.example .env          # add your DEEPINFRA_API_KEY
+python generate_dataset.py    # datasets/  (deterministic, seed 42)
+python evaluate.py            # results/   (skips conditions that already have results)
 python analyze.py
 ```
 
-Produces:
-- `accuracy_summary.csv` — full accuracy table (paste into paper)
-- `error_analysis.json` — error patterns
-- `figures/` — bar charts and heatmaps (include in paper)
+`python evaluate.py --dry-run` prints example prompts without calling the API.
 
----
+## Repository structure
 
-## Groq Rate Limits (Free Tier)
-
-| Model | Requests/min | Tokens/min | Requests/day |
-|-------|-------------|------------|--------------|
-| llama-3.1-8b-instant | 30 | 131,072 | 14,400 |
-
-At 200 test samples × 4 langs × 2 variants × 3 formats × 2 tasks = **9,600 requests**.
-This fits in the daily limit. With 0.5s delay between requests, full eval takes ~80 min.
-
-**Tips to stay within limits:**
-- Run one task at a time: `--task A` then `--task B`
-- Results are cached — re-running skips already-evaluated conditions
-- Reduce TEST_SIZE in generate_dataset.py if needed (try 100)
-
----
-
-## Tasks
-
-### Task A: Grammaticality Judgment
-
-The model sees a number expression and decides if it's valid.
-
-**Prompt example:**
 ```
-Language: English
-Number expression: "five hundred two"
-
-Is this number expression grammatically valid in English?
-Answer with ONLY one word: grammatical or ungrammatical.
+├── generate_dataset.py   # builds Task A/B datasets (num2words + templates)
+├── evaluate.py           # queries the model, writes results/*.jsonl
+├── analyze.py            # accuracy table, error analysis, figures
+├── prompts/              # system and user prompt templates
+├── templates/            # sentence templates for the "sentence" variant
+├── datasets/             # generated JSONL (train/val/test; only test is evaluated)
+├── results/              # raw model responses per condition
+├── figures/              # plots
+├── accuracy_summary.csv
+└── error_analysis.json   # error counts per condition, failed API calls
 ```
 
-Labels: `grammatical` (1) / `ungrammatical` (0)
-Chance baseline: **50%**
+## Limitations
 
-### Task B: Value Comparison
+- **Provider change mid-study.** Most conditions were collected through Groq (`llama-3.1-8b-instant`) before its deprecation on 2026-08-16. Six conditions (the corrected Danish ones) were collected through DeepInfra, which serves the same Meta-Llama-3.1-8B-Instruct weights. Serving stacks can differ slightly even at temperature 0. Two requests failed and are counted as wrong.
+- **Condition count.** The paper reports 48 conditions and 9,600 queries. Eight of these are Task A "mixed" conditions, which present the same input as "digits", so this repository reports the 40 distinct conditions (8,000 queries).
+- **One model, one prompt, small test sets.** Results reflect a single 8B model, a single zero-shot prompt per task and 200 items per condition, without significance testing; smaller differences should be read with caution.
+- **Number words come from `num2words`** and were not checked by native speakers. A Danish error (`treds` instead of `tres` for 60–69) was found and fixed before the final evaluation; other generator errors are possible.
 
-The model compares two quantities.
+## Reference
 
-**Prompt example (words format):**
-```
-Which quantity is larger?
-
-A: sixty
-B: seventy
-
-Answer with ONLY the letter A or B.
-```
-
-**Prompt example (mixed format):**
-```
-Which quantity is larger?
-
-A: 60
-B: seventy
-
-Answer with ONLY the letter A or B.
-```
-
-Labels: `A` (first is larger) / `B` (second is larger)
-Chance baseline: **50%**
-
----
-
-## Research Questions
-
-1. Do models perform better with digits or spelled-out numbers?
-2. Can models generalize between formats (mixed condition)?
-3. Are there differences across languages with different number-system structures?
-4. Does embedding numbers in sentences help or hurt performance?
-
----
-
-## Expected Paper Sections
-
-1. **Introduction** — motivation, connection to Johnson et al.
-2. **Related Work** — Johnson et al., Wallace et al., prompting vs probing
-3. **Methods** — tasks, formats, languages, prompt design, dataset generation
-4. **Results** — accuracy tables (from CSV), heatmaps, bar charts
-5. **Discussion** — format effects, language effects, bare vs sentence
-6. **Conclusion** — summary, limitations, future work
-
----
-
-## Model Used
-
-- **Model**: `llama-3.1-8b-instant` (LLaMA 3.1 8B)
-- **Provider**: Groq (free tier)
-- **Temperature**: 0.0 (deterministic)
-- **Max tokens**: 10
-
-To try a larger model, change `MODEL` in `evaluate.py`:
-```python
-MODEL = "llama-3.1-70b-versatile"  # better but slower
-```
-
----
-
-## Citation
-
-Johnson, D., Mak, D., Barker, D., & Loessberg-Zahl, L. (2020).
-Probing for Multilingual Numerical Understanding in Transformer-Based
-Language Models. *Proceedings of the Third BlackboxNLP Workshop*, 184–192.
+Johnson, D., Mak, D., Barker, D., & Loessberg-Zahl, L. (2020). Probing for Multilingual Numerical Understanding in Transformer-Based Language Models. *Proceedings of the Third BlackboxNLP Workshop*, 184–192.

@@ -1,375 +1,254 @@
 """
-analyze.py
-==========
-Reads results/ JSONL files and produces:
-  - accuracy_summary.csv       (full accuracy table)
-  - figures/                   (bar charts and heatmaps)
-  - error_analysis.json        (common error patterns)
+Summarise the model responses in results/ into tables, figures and an error report.
 
-Requirements:
-    pip install pandas matplotlib seaborn
+Outputs:
+    accuracy_summary.csv   accuracy per task x language x variant x format
+    error_analysis.json    error counts, answer bias, unparseable replies
+    figures/*.png          bar charts and heatmaps
+
+Needs no API key: it only reads the saved responses.
 
 Usage:
     python analyze.py
 """
 
 import json
-import os
-import csv
 from pathlib import Path
-from collections import defaultdict
 
-try:
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import matplotlib
-    matplotlib.use("Agg")   # non-interactive backend
-    import seaborn as sns
-    PLOTTING_AVAILABLE = True
-except ImportError:
-    PLOTTING_AVAILABLE = False
-    print("[WARNING] pandas/matplotlib/seaborn not installed.")
-    print("          Run: pip install pandas matplotlib seaborn")
-    print("          Continuing with text-only output.\n")
+import matplotlib
+matplotlib.use("Agg")  # save figures to files without opening a window
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
 RESULTS_DIR = Path("results")
 FIGURES_DIR = Path("figures")
-FIGURES_DIR.mkdir(exist_ok=True)
+CSV_PATH = Path("accuracy_summary.csv")
+ERRORS_PATH = Path("error_analysis.json")
 
-LANGUAGES = ["en", "fr", "da", "ja"]
-LANG_NAMES = {"en": "English", "fr": "French", "da": "Danish", "ja": "Japanese"}
+LANGUAGES = {"en": "English", "fr": "French", "da": "Danish", "ja": "Japanese"}
 VARIANTS = ["bare", "sentence"]
 FORMATS = ["words", "digits", "mixed"]
 TASKS = ["A", "B"]
+FORMAT_COLORS = {"words": "#4C72B0", "digits": "#DD8452", "mixed": "#55A868"}
+VARIANT_COLORS = {"bare": "#2196F3", "sentence": "#FF9800"}
 
 
 # ─────────────────────────────────────────────
-# LOAD RESULTS
+# Load
 # ─────────────────────────────────────────────
 
-def load_all_results() -> list:
-    """Load all result JSONL files into a flat list of records."""
-    all_records = []
+def load_results() -> pd.DataFrame:
+    """One row per model response, from every results/*.jsonl file."""
+    rows = []
     for path in sorted(RESULTS_DIR.glob("*.jsonl")):
         with open(path, encoding="utf-8") as f:
-            for line in f:
-                rec = json.loads(line)
-                all_records.append(rec)
-    print(f"Loaded {len(all_records)} records from {RESULTS_DIR}/")
-    return all_records
+            rows.extend(json.loads(line) for line in f)
+    df = pd.DataFrame(rows)
+    if df.empty:
+        return df
+
+    # Task A "mixed" is identical to "digits" (an expression holds one number),
+    # so results from older runs that still include it are dropped.
+    dup = (df["task"] == "A") & (df["format"] == "mixed")
+    if dup.any():
+        print(f"Ignoring {dup.sum()} Task A 'mixed' records (duplicate of 'digits').")
+        df = df[~dup]
+
+    print(f"Loaded {len(df)} responses from {RESULTS_DIR}/")
+    return df
 
 
 # ─────────────────────────────────────────────
-# ACCURACY COMPUTATION
+# Accuracy table
 # ─────────────────────────────────────────────
 
-def compute_accuracy_table(records: list) -> list:
-    """Compute accuracy per (task, lang, variant, format) condition."""
-    buckets = defaultdict(lambda: {"correct": 0, "total": 0})
-
-    for rec in records:
-        task = rec.get("task", "?")
-        lang = rec.get("lang", "?")
-        variant = rec.get("variant", "?")
-        fmt = rec.get("format", "?")
-        key = (task, lang, variant, fmt)
-        buckets[key]["total"] += 1
-        if rec.get("correct"):
-            buckets[key]["correct"] += 1
-
-    rows = []
-    for (task, lang, variant, fmt), counts in sorted(buckets.items()):
-        acc = counts["correct"] / counts["total"] if counts["total"] > 0 else 0
-        rows.append({
-            "task": task,
-            "lang": lang,
-            "lang_name": LANG_NAMES.get(lang, lang),
-            "variant": variant,
-            "format": fmt,
-            "accuracy": round(acc, 4),
-            "correct": counts["correct"],
-            "total": counts["total"],
-        })
-    return rows
+def accuracy_table(df: pd.DataFrame) -> pd.DataFrame:
+    """Accuracy, correct and total per task / language / variant / format."""
+    table = (
+        df.groupby(["task", "lang", "variant", "format"])["correct"]
+        .agg(correct="sum", total="count")
+        .reset_index()
+    )
+    table["correct"] = table["correct"].astype(int)
+    table["accuracy"] = (table["correct"] / table["total"]).round(4)
+    table.insert(2, "lang_name", table["lang"].map(LANGUAGES))
+    return table[["task", "lang", "lang_name", "variant", "format", "accuracy", "correct", "total"]]
 
 
-def save_csv(rows: list, path: str = "accuracy_summary.csv"):
-    """Save accuracy table to CSV."""
-    if not rows:
-        print("[WARN] No results to save.")
-        return
-    fieldnames = list(rows[0].keys())
-    with open(path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
-    print(f"Saved accuracy table -> {path}")
-
-
-def print_accuracy_table(rows: list):
-    """Pretty-print accuracy table to console."""
-    print("\n" + "=" * 70)
-    print(f"{'Task':<6} {'Lang':<10} {'Variant':<10} {'Format':<8} {'Accuracy':>10} {'N':>6}")
-    print("-" * 70)
-    for r in rows:
-        print(f"{r['task']:<6} {r['lang_name']:<10} {r['variant']:<10} {r['format']:<8} "
-              f"{r['accuracy']:>10.3f} {r['total']:>6}")
-    print("=" * 70)
+def print_table(table: pd.DataFrame):
+    print()
+    print(table[["task", "lang_name", "variant", "format", "accuracy", "total"]]
+          .to_string(index=False, float_format="%.3f"))
 
 
 # ─────────────────────────────────────────────
-# PLOTTING
+# Error analysis
 # ─────────────────────────────────────────────
 
-def plot_task_accuracy_by_format(df, task: str):
-    """Bar chart: accuracy by format, grouped by language."""
-    subset = df[(df["task"] == task) & (df["variant"] == "bare")]
-    if subset.empty:
-        return
+def error_analysis(df: pd.DataFrame) -> dict:
+    """
+    Error counts per condition, plus how often each answer was given.
+    The answer distribution shows bias: gold labels are roughly 50/50, so a
+    model that answers "A" 90% of the time is guessing by position, not by value.
+    """
+    df = df.assign(condition="task_" + df["task"] + "_" + df["lang"] + "_"
+                   + df["variant"] + "_" + df["format"])
+    wrong = df[~df["correct"]]
 
-    fig, ax = plt.subplots(figsize=(10, 5))
-    lang_names = [LANG_NAMES[l] for l in LANGUAGES if l in subset["lang"].values]
-    x = range(len(lang_names))
-    width = 0.25
-    colors = {"words": "#4C72B0", "digits": "#DD8452", "mixed": "#55A868"}
+    api_errors = df[df["raw_response"] == "ERROR"]
+    unparseable = df[(df["prediction"] == "invalid") & (df["raw_response"] != "ERROR")]
 
-    for i, fmt in enumerate(FORMATS):
-        fmt_data = subset[subset["format"] == fmt]
-        accs = []
-        for lang in LANGUAGES:
-            row = fmt_data[fmt_data["lang"] == lang]
-            accs.append(row["accuracy"].values[0] if not row.empty else 0)
-        offset = (i - 1) * width
-        bars = ax.bar([xi + offset for xi in x], accs, width,
-                      label=fmt.capitalize(), color=colors[fmt], alpha=0.85)
+    shares = df.groupby("condition")["prediction"].value_counts(normalize=True).round(3)
+    answer_share = {cond: shares[cond].to_dict() for cond in sorted(df["condition"].unique())}
 
-    ax.set_xlabel("Language", fontsize=12)
-    ax.set_ylabel("Accuracy", fontsize=12)
-    ax.set_title(f"Task {task} — Accuracy by Format (Bare Numbers)", fontsize=14)
-    ax.set_xticks(list(x))
-    ax.set_xticklabels([LANG_NAMES[l] for l in LANGUAGES])
-    ax.set_ylim(0, 1.05)
-    ax.axhline(0.5, color="red", linestyle="--", alpha=0.4, label="Chance (0.5)")
-    ax.legend(title="Format")
-    ax.grid(axis="y", alpha=0.3)
-
-    path = FIGURES_DIR / f"task_{task}_by_format_bare.png"
-    plt.tight_layout()
-    plt.savefig(path, dpi=150)
-    plt.close()
-    print(f"Saved figure -> {path}")
-
-
-def plot_bare_vs_sentence(df, task: str):
-    """Bar chart: bare vs sentence accuracy per language and format."""
-    subset = df[df["task"] == task]
-    if subset.empty:
-        return
-
-    for fmt in FORMATS:
-        fmt_data = subset[subset["format"] == fmt]
-        if fmt_data.empty:
-            continue
-
-        fig, ax = plt.subplots(figsize=(9, 5))
-        x = range(len(LANGUAGES))
-        width = 0.35
-        colors = {"bare": "#2196F3", "sentence": "#FF9800"}
-
-        for i, variant in enumerate(VARIANTS):
-            var_data = fmt_data[fmt_data["variant"] == variant]
-            accs = []
-            for lang in LANGUAGES:
-                row = var_data[var_data["lang"] == lang]
-                accs.append(row["accuracy"].values[0] if not row.empty else 0)
-            offset = (i - 0.5) * width
-            ax.bar([xi + offset for xi in x], accs, width,
-                   label=variant.capitalize(), color=colors[variant], alpha=0.85)
-
-        ax.set_xlabel("Language", fontsize=12)
-        ax.set_ylabel("Accuracy", fontsize=12)
-        ax.set_title(f"Task {task} ({fmt.capitalize()}) — Bare vs Sentence", fontsize=13)
-        ax.set_xticks(list(x))
-        ax.set_xticklabels([LANG_NAMES[l] for l in LANGUAGES])
-        ax.set_ylim(0, 1.05)
-        ax.axhline(0.5, color="red", linestyle="--", alpha=0.4, label="Chance (0.5)")
-        ax.legend()
-        ax.grid(axis="y", alpha=0.3)
-
-        path = FIGURES_DIR / f"task_{task}_{fmt}_bare_vs_sentence.png"
-        plt.tight_layout()
-        plt.savefig(path, dpi=150)
-        plt.close()
-        print(f"Saved figure -> {path}")
-
-
-def plot_heatmap(df, task: str, variant: str):
-    """Heatmap: language x format accuracy."""
-    subset = df[(df["task"] == task) & (df["variant"] == variant)]
-    if subset.empty:
-        return
-
-    pivot_data = {}
-    for fmt in FORMATS:
-        fmt_data = subset[subset["format"] == fmt]
-        row_vals = {}
-        for lang in LANGUAGES:
-            cell = fmt_data[fmt_data["lang"] == lang]
-            row_vals[LANG_NAMES[lang]] = cell["accuracy"].values[0] if not cell.empty else 0
-        pivot_data[fmt.capitalize()] = row_vals
-
-    import pandas as pd_local
-    heatmap_df = pd_local.DataFrame(pivot_data).T
-
-    fig, ax = plt.subplots(figsize=(7, 4))
-    sns.heatmap(heatmap_df, annot=True, fmt=".2f", cmap="YlOrRd",
-                vmin=0.4, vmax=1.0, ax=ax, linewidths=0.5,
-                annot_kws={"size": 12})
-    ax.set_title(f"Task {task} ({variant.capitalize()}) — Accuracy Heatmap", fontsize=13)
-    ax.set_xlabel("Language")
-    ax.set_ylabel("Format")
-
-    path = FIGURES_DIR / f"task_{task}_{variant}_heatmap.png"
-    plt.tight_layout()
-    plt.savefig(path, dpi=150)
-    plt.close()
-    print(f"Saved figure -> {path}")
-
-
-def plot_format_comparison_overall(df):
-    """Summary plot: average accuracy per format across all conditions."""
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-    colors = {"words": "#4C72B0", "digits": "#DD8452", "mixed": "#55A868"}
-
-    for ax, task in zip(axes, ["A", "B"]):
-        subset = df[df["task"] == task]
-        fmt_means = {}
-        fmt_stds = {}
-        for fmt in FORMATS:
-            vals = subset[subset["format"] == fmt]["accuracy"].values
-            fmt_means[fmt] = vals.mean() if len(vals) > 0 else 0
-            fmt_stds[fmt] = vals.std() if len(vals) > 0 else 0
-
-        fmts = list(FORMATS)
-        means = [fmt_means[f] for f in fmts]
-        stds = [fmt_stds[f] for f in fmts]
-        bar_colors = [colors[f] for f in fmts]
-
-        ax.bar(fmts, means, yerr=stds, color=bar_colors, alpha=0.85,
-               capsize=5, error_kw={"linewidth": 1.5})
-        ax.set_ylim(0, 1.05)
-        ax.axhline(0.5, color="red", linestyle="--", alpha=0.4, label="Chance")
-        ax.set_title(f"Task {task} — Mean Accuracy by Format", fontsize=13)
-        ax.set_xlabel("Format")
-        ax.set_ylabel("Mean Accuracy ± SD")
-        ax.set_xticklabels([f.capitalize() for f in fmts])
-        ax.grid(axis="y", alpha=0.3)
-        ax.legend()
-
-    path = FIGURES_DIR / "overall_format_comparison.png"
-    plt.tight_layout()
-    plt.savefig(path, dpi=150)
-    plt.close()
-    print(f"Saved figure -> {path}")
-
-
-# ─────────────────────────────────────────────
-# ERROR ANALYSIS
-# ─────────────────────────────────────────────
-
-def error_analysis(records: list) -> dict:
-    """Identify common error patterns."""
-    errors = defaultdict(list)
-    invalid_responses = []
-
-    for rec in records:
-        if rec.get("correct"):
-            continue
-        task = rec.get("task")
-        pred = rec.get("prediction", "")
-        raw = rec.get("raw_response", "")
-
-        if pred == "invalid":
-            invalid_responses.append({
-                "task": task,
-                "lang": rec.get("lang"),
-                "format": rec.get("format"),
-                "raw_response": raw,
-            })
-
-        key = f"task_{task}_{rec.get('lang')}_{rec.get('format')}"
-        errors[key].append({
-            "prediction": pred,
-            "gold": rec.get("label_text"),
-            "raw": raw,
-        })
-
-    summary = {
-        "total_invalid_responses": len(invalid_responses),
-        "invalid_examples": invalid_responses[:10],
-        "error_counts_by_condition": {k: len(v) for k, v in errors.items()},
-        "most_confused": sorted(errors.items(), key=lambda x: len(x[1]), reverse=True)[:5],
-    }
-
-    # Simplify for JSON serialization
-    summary["most_confused"] = [
-        {"condition": k, "error_count": len(v), "examples": v[:3]}
-        for k, v in summary["most_confused"]
+    error_counts = wrong["condition"].value_counts()
+    most_confused = [
+        {
+            "condition": cond,
+            "error_count": int(n),
+            "examples": wrong[wrong["condition"] == cond]
+            .head(3)[["prediction", "label_text", "raw_response"]]
+            .rename(columns={"label_text": "gold", "raw_response": "raw"})
+            .to_dict(orient="records"),
+        }
+        for cond, n in error_counts.head(5).items()
     ]
 
-    with open("error_analysis.json", "w", encoding="utf-8") as f:
+    summary = {
+        "api_errors": int(len(api_errors)),
+        "unparseable_responses": int(len(unparseable)),
+        "unparseable_examples": unparseable.head(10)[
+            ["task", "lang", "variant", "format", "raw_response"]].to_dict(orient="records"),
+        "error_counts_by_condition": {k: int(v) for k, v in sorted(error_counts.items())},
+        "answer_share_by_condition": answer_share,
+        "most_confused": most_confused,
+    }
+    with open(ERRORS_PATH, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
-    print("Saved error analysis -> error_analysis.json")
+    print(f"Saved {ERRORS_PATH}")
     return summary
 
 
 # ─────────────────────────────────────────────
-# MAIN
+# Figures
+# ─────────────────────────────────────────────
+
+def grouped_bars(ax, data: pd.DataFrame, group_col: str, colors: dict):
+    """Bars per language, one colour per value of group_col."""
+    langs = [l for l in LANGUAGES if l in data["lang"].values]
+    groups = [g for g in colors if g in data[group_col].values]
+    width = 0.8 / len(groups)
+    for i, g in enumerate(groups):
+        accs = (data[data[group_col] == g].set_index("lang")["accuracy"]
+                .reindex(langs).fillna(0))
+        offset = (i - len(groups) / 2 + 0.5) * width
+        ax.bar([x + offset for x in range(len(langs))], accs, width,
+               label=g.capitalize(), color=colors[g], alpha=0.85)
+    ax.set_xticks(range(len(langs)))
+    ax.set_xticklabels([LANGUAGES[l] for l in langs])
+    style_axes(ax)
+
+
+def style_axes(ax):
+    ax.set_ylim(0, 1.05)
+    ax.set_ylabel("Accuracy")
+    ax.axhline(0.5, color="red", linestyle="--", alpha=0.4, label="Chance (0.5)")
+    ax.grid(axis="y", alpha=0.3)
+    ax.legend()
+
+
+def save(fig, name: str):
+    path = FIGURES_DIR / name
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+    print(f"Saved {path}")
+
+
+def plot_by_format(table, task):
+    data = table[(table["task"] == task) & (table["variant"] == "bare")]
+    if data.empty:
+        return
+    fig, ax = plt.subplots(figsize=(10, 5))
+    grouped_bars(ax, data, "format", FORMAT_COLORS)
+    ax.set_title(f"Task {task}: accuracy by format (bare numbers)")
+    save(fig, f"task_{task}_by_format_bare.png")
+
+
+def plot_bare_vs_sentence(table, task):
+    for fmt in FORMATS:
+        data = table[(table["task"] == task) & (table["format"] == fmt)]
+        if data.empty:
+            continue
+        fig, ax = plt.subplots(figsize=(10, 5))
+        grouped_bars(ax, data, "variant", VARIANT_COLORS)
+        ax.set_title(f"Task {task} ({fmt}): bare vs sentence")
+        save(fig, f"task_{task}_{fmt}_bare_vs_sentence.png")
+
+
+def plot_heatmap(table, task, variant):
+    data = table[(table["task"] == task) & (table["variant"] == variant)]
+    if data.empty:
+        return
+    grid = (data.pivot(index="format", columns="lang", values="accuracy")
+            .reindex(index=[f for f in FORMATS if f in data["format"].values],
+                     columns=[l for l in LANGUAGES if l in data["lang"].values]))
+    grid.index = [f.capitalize() for f in grid.index]
+    grid.columns = [LANGUAGES[l] for l in grid.columns]
+
+    fig, ax = plt.subplots(figsize=(8, len(grid) + 1.5))
+    sns.heatmap(grid, annot=True, fmt=".2f", cmap="YlOrRd", vmin=0.4, vmax=1.0,
+                linewidths=0.5, annot_kws={"size": 12}, ax=ax)
+    ax.set_title(f"Task {task} ({variant}): accuracy")
+    ax.set_xlabel("Language")
+    ax.set_ylabel("Format")
+    save(fig, f"task_{task}_{variant}_heatmap.png")
+
+
+def plot_format_overview(table):
+    """Mean accuracy per format, averaged over languages and variants (± SD)."""
+    tasks = [t for t in TASKS if t in table["task"].values]
+    fig, axes = plt.subplots(1, len(tasks), figsize=(6 * len(tasks), 5), squeeze=False)
+    for ax, task in zip(axes[0], tasks):
+        stats = (table[table["task"] == task].groupby("format")["accuracy"]
+                 .agg(["mean", "std"]).reindex([f for f in FORMATS])).dropna(how="all")
+        ax.bar(range(len(stats)), stats["mean"], yerr=stats["std"].fillna(0), capsize=5,
+               color=[FORMAT_COLORS[f] for f in stats.index], alpha=0.85)
+        ax.set_xticks(range(len(stats)))
+        ax.set_xticklabels([f.capitalize() for f in stats.index])
+        style_axes(ax)
+        ax.set_ylabel("Mean accuracy ± SD")
+        ax.set_title(f"Task {task}: mean accuracy by format")
+    save(fig, "overall_format_comparison.png")
+
+
+# ─────────────────────────────────────────────
+# Main
 # ─────────────────────────────────────────────
 
 def main():
-    print("=" * 60)
-    print("Numerical Probing — Analysis")
-    print("=" * 60)
-
-    records = load_all_results()
-    if not records:
-        print("[ERROR] No results found in ./results/")
-        print("        Run evaluate.py first.")
+    df = load_results()
+    if df.empty:
+        print(f"No results found in {RESULTS_DIR}/. Run evaluate.py first.")
         return
 
-    rows = compute_accuracy_table(records)
-    print_accuracy_table(rows)
-    save_csv(rows)
+    table = accuracy_table(df)
+    print_table(table)
+    table.to_csv(CSV_PATH, index=False)
+    print(f"\nSaved {CSV_PATH}")
 
-    # Error analysis
-    error_summary = error_analysis(records)
-    print(f"\nInvalid responses (model didn't follow format): {error_summary['total_invalid_responses']}")
+    summary = error_analysis(df)
+    print(f"API errors: {summary['api_errors']}, "
+          f"unparseable replies: {summary['unparseable_responses']}")
 
-    # Plotting
-    if PLOTTING_AVAILABLE:
-        import pandas as pd
-        df = pd.DataFrame(rows)
-        print("\nGenerating figures...")
-
-        for task in TASKS:
-            plot_task_accuracy_by_format(df, task)
-            plot_bare_vs_sentence(df, task)
-            for variant in VARIANTS:
-                plot_heatmap(df, task, variant)
-
-        plot_format_comparison_overall(df)
-        print(f"\nAll figures saved to ./{FIGURES_DIR}/")
-    else:
-        print("\n[SKIP] Install pandas+matplotlib+seaborn for plots.")
-        print("       pip install pandas matplotlib seaborn")
-
-    print("\n" + "=" * 60)
-    print("Analysis complete!")
-    print("  accuracy_summary.csv  — full accuracy table")
-    print("  error_analysis.json   — error patterns")
-    print("  figures/              — all plots")
-    print("=" * 60)
+    FIGURES_DIR.mkdir(exist_ok=True)
+    for task in TASKS:
+        plot_by_format(table, task)
+        plot_bare_vs_sentence(table, task)
+        for variant in VARIANTS:
+            plot_heatmap(table, task, variant)
+    plot_format_overview(table)
 
 
 if __name__ == "__main__":

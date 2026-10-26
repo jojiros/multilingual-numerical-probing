@@ -1,0 +1,30 @@
+{
+    "en": [
+        "There are {number} books on the shelf.",
+        "She counted {number} apples in the basket.",
+        "The store has {number} items in stock.",
+        "He walked {number} steps today.",
+        "The class has {number} students."
+    ],
+    "fr": [
+        "Il y a {number} livres sur l'étagère.",
+        "Elle a compté {number} pommes dans le panier.",
+        "Le magasin a {number} articles en stock.",
+        "Il a marché {number} pas aujourd'hui.",
+        "La classe a {number} élèves."
+    ],
+    "da": [
+        "Der er {number} bøger på hylden.",
+        "Hun talte {number} æbler i kurven.",
+        "Butikken har {number} varer på lager.",
+        "Han gik {number} skridt i dag.",
+        "Klassen har {number} elever."
+    ],
+    "ja": [
+        "棚には{number}冊の本があります。",
+        "彼女はかごの中に{number}個のリンゴを数えました。",
+        "店には{number}点の商品があります。",
+        "彼は今日{number}歩歩きました。",
+        "クラスには{number}人の生徒がいます。"
+    ]
+}
