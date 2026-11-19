@@ -23,8 +23,8 @@ import seaborn as sns
 
 RESULTS_DIR = Path("results")
 FIGURES_DIR = Path("figures")
-CSV_PATH = Path("accuracy_summary.csv")
-ERRORS_PATH = Path("error_analysis.json")
+CSV_PATH = Path("results/accuracy_summary.csv")
+ERRORS_PATH = Path("results/error_analysis.json")
 
 LANGUAGES = {"en": "English", "fr": "French", "da": "Danish", "ja": "Japanese"}
 VARIANTS = ["bare", "sentence"]
