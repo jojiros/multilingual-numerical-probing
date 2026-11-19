@@ -21,7 +21,7 @@ This project revisits the probing study of [Johnson et al. (2020)](https://aclan
 
 ## Results
 
-Accuracy on 200 test items per condition. Full table: [`results/accuracy_summary.csv`](accuracy_summary.csv). All tables and figures are produced by `analyze.py` from the raw responses in [`results/`](results/).
+Accuracy on 200 test items per condition. Full table: [`results/accuracy_summary.csv`](results/accuracy_summary.csv). All tables and figures are produced by `analyze.py` from the raw responses in [`results/`](results/).
 
 **Task A — Is this number expression grammatical?**
 
