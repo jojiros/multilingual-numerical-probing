@@ -27,7 +27,7 @@ Accuracy on 200 test items per condition. Full table: [`results/accuracy_summary
 
 | Variant | Format | English | French | Danish | Japanese |
 |---|---|---|---|---|---|
-| bare | words | **0.975** | 0.82 | 0.76 | 0.635 |
+| bare | words | 0.975 | 0.82 | 0.76 | 0.635 |
 | bare | digits | 0.65 | 0.585 | 0.405 | 0.985 |
 | sentence | words | 0.90 | 0.86 | 0.66 | 0.655 |
 | sentence | digits | 0.61 | 0.565 | 0.47 | 0.575 |
@@ -36,7 +36,7 @@ Accuracy on 200 test items per condition. Full table: [`results/accuracy_summary
 
 | Variant | Format | English | French | Danish | Japanese |
 |---|---|---|---|---|---|
-| bare | digits | **1.00** | **0.995** | **0.99** | **0.99** |
+| bare | digits | 1.00 | 0.995 | 0.99 | 0.99 |
 | bare | words | 0.635 | 0.525 | 0.485 | 0.65 |
 | bare | mixed | 0.66 | 0.52 | 0.47 | 0.61 |
 | sentence | digits | 0.88 | 0.81 | 0.86 | 0.92 |
@@ -71,7 +71,7 @@ Accuracy on 200 test items per condition. Full table: [`results/accuracy_summary
 ## Reproducing the results
 
 ```bash
-git clone https://github.com/<you>/multilingual-numerical-probing.git
+git clone https://github.com/jojiros/multilingual-numerical-probing.git
 cd multilingual-numerical-probing
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
@@ -80,7 +80,7 @@ pip install -r requirements.txt
 Raw model outputs for every item are committed in [`results/`](results/), so the tables and figures can be rebuilt without an API key:
 
 ```bash
-python analyze.py             # accuracy_summary.csv, error_analysis.json, figures/
+python analyze.py
 ```
 
 To rerun everything from scratch:
@@ -88,7 +88,7 @@ To rerun everything from scratch:
 ```bash
 cp .env.example .env          # add your DEEPINFRA_API_KEY
 python generate_dataset.py    # datasets/  (deterministic, seed 42)
-python evaluate.py            # results/   (skips conditions that already have results)
+python evaluate.py            # results/  
 python analyze.py
 ```
 
@@ -104,9 +104,7 @@ python analyze.py
 ├── templates/            # sentence templates for the "sentence" variant
 ├── datasets/             # generated JSONL (train/val/test; only test is evaluated)
 ├── results/              # raw model responses per condition
-├── figures/              # plots
-├── accuracy_summary.csv
-└── error_analysis.json   # error counts per condition, failed API calls
+└── figures/              # plots
 ```
 
 ## Limitations
